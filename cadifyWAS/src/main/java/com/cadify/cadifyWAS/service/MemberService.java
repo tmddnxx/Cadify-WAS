@@ -19,29 +19,43 @@ public class MemberService {
     private final MemberMapper memberMapper;
 
     @Transactional
-    public Member insertMember(MemberDTO.Post post){
-        if(validateMemberByEmail(post.getEmail()).isPresent()){
+    public MemberDTO.Response insertMember(MemberDTO.Post post){
+
+        if(memberRepository.findByEmail(post.getEmail()).isPresent()){
             throw new BusinessLogicException(ExceptionCode.MEMBER_ALREADY_EXISTS);
         }else{
-            return memberRepository.save(memberMapper.memberPostToMember(post));
+            return memberMapper.memberToMemberResponse(
+                    memberRepository.save(memberMapper.memberPostToMember(post)));
         }
     }
+
     @Transactional
-    public Member updateMember(MemberDTO.Patch patch){
-        if(validateMemberByEmail(patch.getEmail()).isPresent()){
-            // 비밀번호 비교 로직 ( 암호화 작업 우선 )
-            return memberRepository.save(memberMapper.memberPatchToMember(patch));
+    public MemberDTO.Response updateMember(MemberDTO.Patch patch){
+
+        Optional<Member> member = memberRepository.findByEmail(patch.getEmail());
+
+        if(member.isPresent()){
+            return memberMapper.memberToMemberResponse(
+                    memberRepository.save(member.get().updateMemberInfo(patch)));
         }else{
             throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
         }
     }
 
-    public MemberDTO.Response selectMember(String email){
+    public String deleteMember(MemberDTO.Patch patch){
 
-        return memberMapper.memberToMemberResponse(validateMemberByEmail(email).get());
+        Optional<Member> member = memberRepository.findByEmail(patch.getEmail());
+
+        if(member.isPresent()){
+            memberRepository.delete(member.get());
+            return "Delete OK";
+        }else{
+            return "Who Are You ???";
+        }
     }
 
-    private Optional<Member> validateMemberByEmail(String email){
-        return memberRepository.findByEmail(email);
+    public MemberDTO.Response selectMember(String email){
+        return memberMapper.memberToMemberResponse(
+                memberRepository.findByEmail(email).get());
     }
 }
