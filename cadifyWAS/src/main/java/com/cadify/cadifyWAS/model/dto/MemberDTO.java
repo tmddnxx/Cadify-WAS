@@ -9,6 +9,17 @@ import lombok.*;
 public class MemberDTO {
     @Getter
     @NoArgsConstructor
+    public static class LoginPost{
+        private String email;
+        private String password;
+    }
+    @Getter
+    @AllArgsConstructor
+    public static class LoginResponse{
+        private String token;
+    }
+    @Getter
+    @NoArgsConstructor
     public static class Post{
 
         @NotBlank(message = "이름은 공백이 아니어야 합니다.")
