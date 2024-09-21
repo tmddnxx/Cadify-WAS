@@ -13,7 +13,7 @@ import java.util.Date;
 public class JwtUtil {
     @Value("${jwt.secret}")
     private String secretKey;
-    @Value("${jwt.expiration")
+    @Value("${jwt.expiration}")
     private long expirationTime;
     // 토큰생성
     public String generateToken(String username){
