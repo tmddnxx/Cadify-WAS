@@ -31,6 +31,7 @@ public class MemberDTO {
         @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
         private String email;
 
+        @Setter
         @NotBlank(message = "비밀번호는 공백이 아니어야 합니다.")
         @Pattern(
                 regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$",
@@ -42,6 +43,7 @@ public class MemberDTO {
     @NoArgsConstructor
     public static class Patch{
         private String email;
+        @Setter
         private String password;
         @Pattern(regexp = "^[가-힣]{2,8}$", message ="변경할 이름은 2이상 8이하의 한글이어야 합니다.")
         private String memberName;

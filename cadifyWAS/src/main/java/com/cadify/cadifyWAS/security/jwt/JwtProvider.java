@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-public class JwtUtil {
+public class JwtProvider {
     @Value("${jwt.secret}")
     private String secretKey;
     @Value("${jwt.expiration}")

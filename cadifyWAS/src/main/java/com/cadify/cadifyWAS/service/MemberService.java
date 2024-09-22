@@ -8,6 +8,7 @@ import com.cadify.cadifyWAS.model.entity.Member;
 import com.cadify.cadifyWAS.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberMapper memberMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public MemberDTO.Response insertMember(MemberDTO.Post post){
@@ -24,6 +26,9 @@ public class MemberService {
         if(memberRepository.findByEmail(post.getEmail()).isPresent()){
             throw new BusinessLogicException(ExceptionCode.MEMBER_ALREADY_EXISTS);
         }else{
+            String encodedPassword = passwordEncoder.encode(post.getPassword());
+            post.setPassword(encodedPassword);
+
             return memberMapper.memberToMemberResponse(
                     memberRepository.save(memberMapper.memberPostToMember(post)));
         }
@@ -34,7 +39,7 @@ public class MemberService {
 
         Optional<Member> member = memberRepository.findByEmail(patch.getEmail());
 
-        if(member.isPresent()){
+        if(member.isPresent() && verifyPassword(patch.getPassword(), member.get().getPassword())){
             return memberMapper.memberToMemberResponse(
                     memberRepository.save(member.get().updateMemberInfo(patch)));
         }else{
@@ -57,5 +62,9 @@ public class MemberService {
     public MemberDTO.Response selectMember(String email){
         return memberMapper.memberToMemberResponse(
                 memberRepository.findByEmail(email).get());
+    }
+
+    public boolean verifyPassword(String rawPassword, String encodedPassword){
+        return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 }

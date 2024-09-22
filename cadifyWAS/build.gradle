@@ -37,8 +37,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	// JWT Token
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'	// 생성, 파싱, 서명 및 검증
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-//	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // JSON을 위한 Jackson, web 의존성에 포함.
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5' // JSON 처리를 위한 Jackson
 
 
 	// mapstruct

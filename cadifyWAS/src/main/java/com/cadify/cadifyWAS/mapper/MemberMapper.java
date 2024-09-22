@@ -23,11 +23,11 @@ public class MemberMapper {
                 .build();
     }
 
-    public Member memberPatchToMember(MemberDTO.Patch patch){
-        return Member.builder()
-                .email(patch.getEmail())
-                .password(patch.getPassword())
-                .memberName(patch.getMemberName())
-                .build();
-    }
+//    public Member memberPatchToMember(MemberDTO.Patch patch){
+//        return Member.builder()
+//                .email(patch.getEmail())
+//                .password(patch.getPassword())
+//                .memberName(patch.getMemberName())
+//                .build();
+//    }
 }

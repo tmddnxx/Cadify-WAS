@@ -19,7 +19,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
-    private final JwtUtil jwtUtil;
+    private final JwtProvider jwtProvider;
     @Autowired
     private final UserDetailsService userDetailsService;
 
@@ -27,9 +27,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = resolveToken(request);
 
-        if(token != null && jwtUtil.validateToken(token)){
+        if(token != null && jwtProvider.validateToken(token)){
             UserDetails userDetails = userDetailsService.loadUserByUsername(
-                    jwtUtil.extractUsername(token)
+                    jwtProvider.extractUsername(token)
             );
 
             if(userDetails != null){

@@ -1,7 +1,7 @@
 package com.cadify.cadifyWAS.controller;
 
 import com.cadify.cadifyWAS.model.dto.MemberDTO;
-import com.cadify.cadifyWAS.security.jwt.JwtUtil;
+import com.cadify.cadifyWAS.security.jwt.JwtProvider;
 import com.cadify.cadifyWAS.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,16 +23,16 @@ public class MemberController {
 
     private final AuthenticationManager authenticationManager;
 
-    private final JwtUtil jwtUtil;
+    private final JwtProvider jwtProvider;
 
-    @PostMapping
+    @PostMapping("/public/login")
     public ResponseEntity<?> login(@RequestBody MemberDTO.LoginPost loginPost){
         try{
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginPost.getEmail(), loginPost.getPassword())
             );
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String token = jwtUtil.generateToken(userDetails.getUsername());
+            String token = jwtProvider.generateToken(userDetails.getUsername());
 
             return ResponseEntity.ok(new MemberDTO.LoginResponse(token));
 
@@ -41,7 +41,7 @@ public class MemberController {
         }
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/public/signup")
     public ResponseEntity<MemberDTO.Response> signUp(@Valid @RequestBody MemberDTO.Post post){
 
         return new ResponseEntity<>(
