@@ -3,6 +3,7 @@ package com.cadify.cadifyWAS.controller;
 import com.cadify.cadifyWAS.model.dto.MemberDTO;
 import com.cadify.cadifyWAS.security.jwt.JwtProvider;
 import com.cadify.cadifyWAS.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class MemberController {
     private final JwtProvider jwtProvider;
 
     @PostMapping("/public/login")
-    public ResponseEntity<?> login(@RequestBody MemberDTO.LoginPost loginPost){
+    public ResponseEntity<?> login(@RequestBody MemberDTO.AuthenticationPost loginPost){
         try{
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginPost.getEmail(), loginPost.getPassword())
@@ -34,7 +35,7 @@ public class MemberController {
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             String token = jwtProvider.generateToken(userDetails.getUsername());
 
-            return ResponseEntity.ok(new MemberDTO.LoginResponse(token));
+            return ResponseEntity.ok(new MemberDTO.AuthenticationResponse(token));
 
         } catch (BadCredentialsException e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 올바르지 않습니다.");
@@ -49,25 +50,29 @@ public class MemberController {
                 HttpStatus.OK);
     }
     @PatchMapping("/modify")
-    public ResponseEntity<MemberDTO.Response> modify(@RequestBody MemberDTO.Patch patch){
+    public ResponseEntity<MemberDTO.Response> modify(
+            @RequestBody MemberDTO.Patch patch,
+            HttpServletRequest request){
 
         return new ResponseEntity<>(
-                memberService.updateMember(patch),
+                memberService.updateMember(patch, request),
                 HttpStatus.OK);
     }
-    @GetMapping("/lookup/{email}")
-    public ResponseEntity<MemberDTO.Response> lookUp( @PathVariable String email){
-
-        return new ResponseEntity<>(
-                memberService.selectMember(email),
-                HttpStatus.OK);
-    }
+//    @GetMapping("/lookup/{email}")
+//    public ResponseEntity<MemberDTO.Response> lookUp( @PathVariable String email){
+//
+//        return new ResponseEntity<>(
+//                memberService.selectMember(email),
+//                HttpStatus.OK);
+//    }
 
     @DeleteMapping("/leave")
-    public ResponseEntity<String> leave(@RequestBody MemberDTO.Patch patch ){
+    public ResponseEntity<String> leave(
+            @RequestBody String password,
+            HttpServletRequest request){
 
         return new ResponseEntity<>(
-                memberService.deleteMember(patch),
+                memberService.deleteMember(password, request),
                 HttpStatus.OK);
     }
 }

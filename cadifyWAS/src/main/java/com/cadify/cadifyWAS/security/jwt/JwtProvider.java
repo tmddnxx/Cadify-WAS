@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +37,7 @@ public class JwtProvider {
         return extractClaims(token).getSubject();
     }
     // 만료 시간 검증
-    public boolean validateTokenExpired(String token){
+    public boolean isTokenExpired(String token){
         return extractClaims(token).getExpiration().before(new Date());
     }
     // 올바른 secret key 사용 검증
@@ -47,5 +48,13 @@ public class JwtProvider {
         }catch(JwtException | IllegalArgumentException e){
             return false;
         }
+    }
+
+    public String resolveToken(HttpServletRequest request){
+        String authorization = request.getHeader("Authorization");
+        if(authorization != null && authorization.startsWith("Bearer ")){
+            return authorization.substring(7);
+        }
+        return null;
     }
 }

@@ -14,12 +14,19 @@ public class MemberMapper {
                 .memberName(post.getMemberName())
                 .email(post.getEmail())
                 .password(post.getPassword())
+                .addressNumber(post.getAddressNumber())
+                .addressDetail(post.getAddressDetail())
+                .phone(post.getPhone())
+                .memberRole(post.getMemberRole())
+                .consents(post.getConsents())
                 .build();
     }
     public MemberDTO.Response memberToMemberResponse(Member member){
         return MemberDTO.Response.builder()
                 .memberName(member.getMemberName())
                 .email(member.getEmail())
+                .memberRole(member.getMemberRole())
+                .consents(member.getConsents())
                 .build();
     }
 
