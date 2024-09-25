@@ -40,10 +40,9 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeRequests(authorize ->
                         authorize
-                                .requestMatchers("/member/public/**").permitAll()
-                                .requestMatchers("/swagger-ui/*").permitAll()
+                                .requestMatchers("/**").permitAll()
                                 .anyRequest().authenticated())
-                .formLogin(Customizer.withDefaults())
+                //.formLogin(Customizer.withDefaults())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
