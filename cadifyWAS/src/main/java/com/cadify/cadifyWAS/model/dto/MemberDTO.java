@@ -8,23 +8,17 @@ import lombok.*;
 
 import java.util.HashMap;
 import java.util.Map;
-@Schema(description = "회원 관련 DTO 클래스")
+
 public class MemberDTO {
-    @Schema(description = "로그인 요청 DTO")
+
     @Getter
     @NoArgsConstructor
     public static class AuthenticationPost{
-        @Schema(
-                description = "이메일(pattern=\"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\"",
-                example = "test@example.com"
-        )
+
         @Email(message = "유효한 이메일 형식이 아닙니다.")
         @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
         private String email;
-        @Schema(
-                description = "비밀번호(pattern=\"^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$\"",
-                example = "Password1!"
-        )
+
         @NotBlank(message = "비밀번호는 공백이 아니어야 합니다.")
         @Pattern(
                 regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$",

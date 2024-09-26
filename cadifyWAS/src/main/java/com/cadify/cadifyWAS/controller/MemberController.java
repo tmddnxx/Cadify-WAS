@@ -1,15 +1,9 @@
 package com.cadify.cadifyWAS.controller;
 
+import com.cadify.cadifyWAS.Util.CustomAnnotation;
 import com.cadify.cadifyWAS.model.dto.MemberDTO;
 import com.cadify.cadifyWAS.security.jwt.JwtProvider;
 import com.cadify.cadifyWAS.service.MemberService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -33,27 +27,7 @@ public class MemberController {
 
     private final JwtProvider jwtProvider;
 
-    @Operation(
-            summary = "로그인",
-            description = "token 인증 X"
-    )
-    @ApiResponses(value ={
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "로그인 성공",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = MemberDTO.AuthenticationResponse.class)
-                    )),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "잘못된 로그인 정보",
-                    content = @Content(mediaType = "application/json")),
-    })
-    @Parameters({
-            @Parameter(name = "email", description = "이메일", example = "test@example.com"),
-            @Parameter(name = "password", description = "비밀번호", example = "Password!"),
-    })
+    @CustomAnnotation.Member.LoginOperation
     @PostMapping("/public/login")
     public ResponseEntity<?> login(@RequestBody MemberDTO.AuthenticationPost loginPost){
         try{
@@ -69,7 +43,7 @@ public class MemberController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 올바르지 않습니다.");
         }
     }
-
+    @CustomAnnotation.Member.SignUpOperation
     @PostMapping("/public/signup")
     public ResponseEntity<MemberDTO.Response> signUp(@Valid @RequestBody MemberDTO.Post post){
 
@@ -77,6 +51,7 @@ public class MemberController {
                 memberService.insertMember(post),
                 HttpStatus.OK);
     }
+    @CustomAnnotation.Member.ModifyOperation
     @PatchMapping("/modify")
     public ResponseEntity<MemberDTO.Response> modify(
             @RequestBody MemberDTO.Patch patch,
@@ -86,14 +61,7 @@ public class MemberController {
                 memberService.updateMember(patch, request),
                 HttpStatus.OK);
     }
-//    @GetMapping("/lookup/{email}")
-//    public ResponseEntity<MemberDTO.Response> lookUp( @PathVariable String email){
-//
-//        return new ResponseEntity<>(
-//                memberService.selectMember(email),
-//                HttpStatus.OK);
-//    }
-
+    @CustomAnnotation.Member.LeaveOperation
     @DeleteMapping("/leave")
     public ResponseEntity<String> leave(
             @RequestBody String password,
@@ -104,3 +72,10 @@ public class MemberController {
                 HttpStatus.OK);
     }
 }
+//    @GetMapping("/lookup/{email}")
+//    public ResponseEntity<MemberDTO.Response> lookUp( @PathVariable String email){
+//
+//        return new ResponseEntity<>(
+//                memberService.selectMember(email),
+//                HttpStatus.OK);
+//    }
