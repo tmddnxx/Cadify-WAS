@@ -1,5 +1,8 @@
 package com.cadify.cadifyWAS.security.jwt;
 
+import com.cadify.cadifyWAS.exception.CustomLogicException;
+import com.cadify.cadifyWAS.exception.ExceptionCode;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -7,11 +10,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -27,30 +28,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+
         String token = jwtProvider.resolveToken(request);
-
-        if(token != null && jwtProvider.validateToken(token)){
-            try{
-                UserDetails userDetails = userDetailsService.loadUserByUsername(
-                        jwtProvider.extractUsername(token));
-
-                if(userDetails != null){
-                    JwtAuthenticationToken authentication =
-                            new JwtAuthenticationToken(userDetails, userDetails.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
-            }catch(UsernameNotFoundException e){
-                logger.error("User not found: {}", e.getMessage());
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "존재하지 않는 회원");
-                return;
-            }catch(Exception e){
-                logger.error("Authentication error: {}", e.getMessage());
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "인증 오류");
-                return;
+        if(token != null) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(
+                    jwtProvider.extractUsername(token)
+            );
+            if (userDetails != null) {
+                JwtAuthenticationToken authenticationToken =
+                        new JwtAuthenticationToken(userDetails, userDetails.getAuthorities());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
-        }else{
-            logger.info("유효하지 않거나 만료된 토큰: {}", token);
         }
         filterChain.doFilter(request, response);
     }

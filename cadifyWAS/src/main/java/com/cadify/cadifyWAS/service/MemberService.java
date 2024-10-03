@@ -1,13 +1,12 @@
 package com.cadify.cadifyWAS.service;
 
-import com.cadify.cadifyWAS.exception.BusinessLogicException;
+import com.cadify.cadifyWAS.exception.CustomLogicException;
 import com.cadify.cadifyWAS.exception.ExceptionCode;
 import com.cadify.cadifyWAS.mapper.MemberMapper;
 import com.cadify.cadifyWAS.model.dto.MemberDTO;
 import com.cadify.cadifyWAS.model.entity.Member;
 import com.cadify.cadifyWAS.repository.MemberRepository;
 import com.cadify.cadifyWAS.security.jwt.JwtProvider;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +34,7 @@ public class MemberService implements UserDetailsService {
     public MemberDTO.Response insertMember(MemberDTO.Post post){
 
         if(memberRepository.findByEmail(post.getEmail()).isPresent()){
-            throw new BusinessLogicException(ExceptionCode.MEMBER_ALREADY_EXISTS);
+            throw new CustomLogicException(ExceptionCode.MEMBER_ALREADY_EXISTS);
         }else{
             String encodedPassword = passwordEncoder.encode(post.getPassword());
             post.replacePassword(encodedPassword);
@@ -53,7 +51,7 @@ public class MemberService implements UserDetailsService {
             return memberMapper.memberToMemberResponse(
                     memberRepository.save(member.updateMemberInfo(patch)));
         }else{
-            throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+            throw new CustomLogicException(ExceptionCode.MEMBER_NOT_FOUND);
         }
     }
 
@@ -88,7 +86,7 @@ public class MemberService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Member member = memberRepository.findByEmail(username)
-                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new CustomLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(member.getMemberRole().toString()));
