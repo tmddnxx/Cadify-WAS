@@ -23,26 +23,6 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    private final AuthenticationManager authenticationManager;
-
-    private final JwtProvider jwtProvider;
-
-    @CustomAnnotation.Member.LoginOperation
-    @PostMapping("/public/login")
-    public ResponseEntity<?> login(@RequestBody MemberDTO.AuthenticationPost loginPost){
-        try{
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginPost.getEmail(), loginPost.getPassword())
-            );
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String token = jwtProvider.generateToken(userDetails.getUsername());
-
-            return ResponseEntity.ok(new MemberDTO.AuthenticationResponse(token));
-
-        } catch (BadCredentialsException e){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 정보가 올바르지 않습니다.");
-        }
-    }
     @CustomAnnotation.Member.SignUpOperation
     @PostMapping("/public/signup")
     public ResponseEntity<MemberDTO.Response> signUp(@Valid @RequestBody MemberDTO.Post post){
@@ -72,10 +52,3 @@ public class MemberController {
                 HttpStatus.OK);
     }
 }
-//    @GetMapping("/lookup/{email}")
-//    public ResponseEntity<MemberDTO.Response> lookUp( @PathVariable String email){
-//
-//        return new ResponseEntity<>(
-//                memberService.selectMember(email),
-//                HttpStatus.OK);
-//    }

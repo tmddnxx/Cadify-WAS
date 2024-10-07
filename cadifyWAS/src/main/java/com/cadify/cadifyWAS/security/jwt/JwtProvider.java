@@ -12,34 +12,46 @@ import java.util.Date;
 
 @Component
 public class JwtProvider {
-    @Value("${jwt.secret}")
-    private String secretKey;
-    @Value("${jwt.expiration}")
-    private long expirationTime;
+    private final SecretKey secretKey;
+    private final long expirationTime;
+    private final long expirationTimeRefreshToken;
+
+    public JwtProvider(@Value("${jwt.secret}")String keyString,
+                       @Value("${jwt.expiration}")long expirationTime){
+        this.expirationTime = expirationTime;
+        byte[] byteKey = Base64.getDecoder().decode(keyString);
+        this.secretKey = new SecretKeySpec(byteKey, SignatureAlgorithm.HS512.getJcaName());
+        this.expirationTimeRefreshToken = expirationTime * 48 * 7;
+    }
 
     // 토큰생성
-    public String generateToken(String username){
-        byte[] secretBytes = Base64.getDecoder().decode(secretKey);
-        SecretKey byteKey = new SecretKeySpec(secretBytes, SignatureAlgorithm.HS256.getJcaName());
-
-
+    public String generateAccessToken(String username){
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-                .signWith(byteKey, SignatureAlgorithm.HS256)
+                .signWith(secretKey, SignatureAlgorithm.HS512)
+                .compact();
+    }
+    public String generateRefreshToken(String username){
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTimeRefreshToken))
+                .signWith(secretKey, SignatureAlgorithm.HS512)
                 .compact();
     }
     // claim 추출(payload 부분)
-    public Claims extractClaims(String token){
-        return Jwts.parser()
+    public Claims validateToken(String token){
+        return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
+                .build()
                 .parseClaimsJws(token)// 서명 검증
                 .getBody();
     }
     // username 추출
     public String extractUsername(String token){
-        return extractClaims(token).getSubject();
+        return validateToken(token).getSubject();
     }
 
     public String resolveToken(HttpServletRequest request){
@@ -49,9 +61,4 @@ public class JwtProvider {
         }
         return null;
     }
-
-//    만료 시간 검증
-//    public boolean isTokenExpired(Claims claims){
-//        return claims.getExpiration().before(new Date());
-//    }
 }

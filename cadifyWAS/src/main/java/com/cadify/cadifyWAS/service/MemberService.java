@@ -69,11 +69,6 @@ public class MemberService implements UserDetailsService {
         }
     }
 
-//    public MemberDTO.Response selectMember(String email){
-//        return memberMapper.memberToMemberResponse(
-//                memberRepository.findByEmail(email).get());
-//    }
-
     public boolean verifyPassword(String rawPassword, String encodedPassword){
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }

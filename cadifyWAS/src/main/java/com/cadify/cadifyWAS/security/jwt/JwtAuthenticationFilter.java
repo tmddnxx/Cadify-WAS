@@ -1,8 +1,5 @@
 package com.cadify.cadifyWAS.security.jwt;
 
-import com.cadify.cadifyWAS.exception.CustomLogicException;
-import com.cadify.cadifyWAS.exception.ExceptionCode;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
