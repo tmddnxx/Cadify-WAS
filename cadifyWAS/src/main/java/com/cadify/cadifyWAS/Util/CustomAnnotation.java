@@ -1,7 +1,7 @@
 package com.cadify.cadifyWAS.Util;
 
+import com.cadify.cadifyWAS.model.dto.AuthDTO;
 import com.cadify.cadifyWAS.model.dto.MemberDTO;
-import com.cadify.cadifyWAS.model.entity.Member;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -9,13 +9,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.validation.constraints.Pattern;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.Map;
 
 public class CustomAnnotation {
     public static class Member{
@@ -28,7 +26,7 @@ public class CustomAnnotation {
                         description = "로그인 성공",
                         content = @Content(
                                 mediaType = "application/json",
-                                schema = @Schema(implementation = MemberDTO.AuthenticationResponse.class)
+                                schema = @Schema(implementation = AuthDTO.AuthResponse.class)
                         ))
         })
         @Parameters({
@@ -75,7 +73,7 @@ public class CustomAnnotation {
                         description = "수정 완료",
                         content = @Content(
                                 mediaType = "application/json",
-                                schema = @Schema(implementation = MemberDTO.AuthenticationResponse.class)
+                                schema = @Schema(implementation = AuthDTO.AuthResponse.class)
                         ))
         })
         @Parameters({

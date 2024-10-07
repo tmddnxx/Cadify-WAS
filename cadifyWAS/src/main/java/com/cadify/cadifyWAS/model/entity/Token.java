@@ -11,10 +11,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Token {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long tokenId;
+    private String email;
     @Column(nullable = false)
     private String refreshToken;
     @Column(nullable = false)
-    private boolean expired;
+    private boolean expired = false;
+
+    public Token updateExpired(){
+        this.expired = true;
+        return this;
+    }
 }

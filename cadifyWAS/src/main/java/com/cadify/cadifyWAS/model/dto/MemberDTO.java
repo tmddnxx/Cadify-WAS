@@ -13,26 +13,6 @@ public class MemberDTO {
 
     @Getter
     @NoArgsConstructor
-    public static class AuthenticationPost{
-
-        @Email(message = "유효한 이메일 형식이 아닙니다.")
-        @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
-        private String email;
-
-        @NotBlank(message = "비밀번호는 공백이 아니어야 합니다.")
-        @Pattern(
-                regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$",
-                message = "비밀번호는 대문자, 소문자, 특수문자(!@#$%^&*), 숫자를 포함하여 8자리 이상이여야 합니다."
-        )
-        private String password;
-    }
-    @Getter
-    @AllArgsConstructor
-    public static class AuthenticationResponse{
-        private String token;
-    }
-    @Getter
-    @NoArgsConstructor
     public static class Post{
 
         @NotBlank(message = "이름은 공백이 아니어야 합니다.")
