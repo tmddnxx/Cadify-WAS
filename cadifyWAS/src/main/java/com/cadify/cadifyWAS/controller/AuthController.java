@@ -3,6 +3,7 @@ package com.cadify.cadifyWAS.controller;
 import com.cadify.cadifyWAS.Util.CustomAnnotation;
 import com.cadify.cadifyWAS.model.dto.AuthDTO;
 import com.cadify.cadifyWAS.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,13 @@ public class AuthController {
 
     @CustomAnnotation.Member.LoginOperation
     @PostMapping("/public/login")
-    public ResponseEntity<AuthDTO.AuthResponse> login(@RequestBody AuthDTO.LoginRequest loginRequest){
+    public ResponseEntity<AuthDTO.AuthResponse> login(@Valid @RequestBody AuthDTO.LoginRequest loginRequest){
+
         return new ResponseEntity<>(
                 authService.login(loginRequest),
                 HttpStatus.OK);
     }
+
     @PostMapping("/logout")
     public ResponseEntity<String> logout(){
         authService.logout();
@@ -29,6 +32,7 @@ public class AuthController {
                 "로그아웃 하셨습니다.",
                 HttpStatus.OK);
     }
+
     @PostMapping("/public/refresh")
     public ResponseEntity<?> refresh(@RequestBody AuthDTO.RefreshTokenRequest refreshTokenRequest){
         return new ResponseEntity<>(

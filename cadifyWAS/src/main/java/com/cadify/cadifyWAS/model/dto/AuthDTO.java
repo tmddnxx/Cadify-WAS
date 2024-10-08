@@ -2,6 +2,7 @@ package com.cadify.cadifyWAS.model.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +13,7 @@ public class AuthDTO {
     @Getter
     @NoArgsConstructor
     public static class LoginRequest{
+        @NotNull
         @Email(message = "유효한 이메일 형식이 아닙니다.")
         @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}")
         private String email;
@@ -27,6 +29,7 @@ public class AuthDTO {
         private String refreshToken;
     }
     @Builder
+    @Getter
     public static class AuthResponse{
         private String refreshToken;
         private String accessToken;

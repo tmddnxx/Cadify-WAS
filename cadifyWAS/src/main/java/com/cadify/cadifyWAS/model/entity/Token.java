@@ -3,10 +3,12 @@ package com.cadify.cadifyWAS.model.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Builder
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Token {
@@ -14,11 +16,4 @@ public class Token {
     private String email;
     @Column(nullable = false)
     private String refreshToken;
-    @Column(nullable = false)
-    private boolean expired = false;
-
-    public Token updateExpired(){
-        this.expired = true;
-        return this;
-    }
 }
