@@ -1,7 +1,7 @@
 package com.cadify.cadifyWAS.Controller;
 
-import com.cadify.cadifyWAS.PaymentDTO.PaymentReqDTO;
-import com.cadify.cadifyWAS.PaymentDTO.PaymentResDTO;
+import com.cadify.cadifyWAS.DTO.PaymentDTO.PaymentReqDTO;
+import com.cadify.cadifyWAS.DTO.PaymentDTO.PaymentResDTO;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;

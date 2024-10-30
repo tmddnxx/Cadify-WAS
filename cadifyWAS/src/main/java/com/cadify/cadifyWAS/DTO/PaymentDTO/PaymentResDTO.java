@@ -1,4 +1,4 @@
-package com.cadify.cadifyWAS.PaymentDTO;
+package com.cadify.cadifyWAS.DTO.PaymentDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
