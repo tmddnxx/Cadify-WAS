@@ -1,5 +1,7 @@
 package com.cadify.cadifyWAS.security;
 
+import com.cadify.cadifyWAS.security.exception.CustomAccessDeniedHandler;
+import com.cadify.cadifyWAS.security.exception.CustomAuthenticationEntryPoint;
 import com.cadify.cadifyWAS.security.jwt.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,15 +32,24 @@ public class SecurityConfig {
             HttpSecurity http,
             JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception{
         return http
-                .csrf(csrf ->
-                        csrf.disable())
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeRequests(authorize ->
+                .csrf(csrf -> csrf.disable())
+
+                .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers(HttpMethod.POST, "/*/public/**").permitAll()
                                 .anyRequest().authenticated())
+
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                        .accessDeniedHandler(new CustomAccessDeniedHandler())
+                )
+
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
                 .build();
     }
 

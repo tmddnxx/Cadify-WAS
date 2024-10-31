@@ -1,5 +1,6 @@
 package com.cadify.cadifyWAS.exception;
 
+import io.jsonwebtoken.security.SignatureException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, e.getStatusCode());
     }
 
+    // 정의되지 않은 에러 발생
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleUnknownExceptions(Exception e){
         logger.error("Error: {}", e.getMessage(), e);

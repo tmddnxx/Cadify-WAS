@@ -57,7 +57,7 @@ public class AuthService {
         Claims claims = jwtProvider.validateToken(request.getRefreshToken());
         // Refresh Token이 만료되었는지 확인
         if (claims == null) {
-            throw new CustomLogicException(ExceptionCode.TOKEN_IS_EXPIRED);
+            throw new CustomLogicException(ExceptionCode.REFRESH_TOKEN_EXPIRED);
         } else {
             // 요청으로 받은 Token 에서 사용자 이메일을 추출,
             // 이메일에 해당하는 Refresh Token이 존재하는지 확인,
@@ -67,6 +67,7 @@ public class AuthService {
                 throw new CustomLogicException(ExceptionCode.INVALID_TOKEN);
             }else {
                 // 새로운 token 세트 제공
+                tokenRepository.save(token);
                 return generateTokenPair(token.getEmail());
             }
         }
@@ -98,7 +99,7 @@ public class AuthService {
         if(Objects.equals(token, validToken)){
             return true;
         }else{
-            throw new CustomLogicException(ExceptionCode.TOKEN_IS_EXPIRED);
+            throw new CustomLogicException(ExceptionCode.REFRESH_TOKEN_EXPIRED);
         }
     }
 }
