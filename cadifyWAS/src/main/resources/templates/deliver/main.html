@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>배송 추적</title>
+</head>
+<body>
+    <div>
+        <h1>배송 추적</h1>
+        <select id="carrierId" onchange="changeCarrier()">
+            <option value="kr.cjlogistics">CJ 대한통운</option>
+            <option value="kr.coupangls">쿠팡 로지스틱스</option>
+            <option value="kr.cupost">CU 편의점택배</option>
+            <option value="kr.chunilps">천일택배</option>
+            <option value="kr.cvsnet">GS PostBox</option>
+            <option value="kr.daesin">대신택배</option>
+            <option value="kr.epost">우체국택배</option>
+            <option value="kr.hanjin">한진택배</option>
+            <option value="kr.ilyanglogis">일양로지스</option>
+            <option value="kr.kdexp">경동택배</option>
+            <option value="kr.logen">로젠택배</option>
+            <option value="kr.lotte">롯데택배</option>
+            <option value="kr.hdexp">합동택배</option>
+        </select>
+        <input id="trackingNumber" type="text" onchange="changeTrackingNumber()">
+        <button onclick="lookDeliver()">배송 조회</button>
+    </div>
+<script th:inline="javascript">
+
+    let carrierId;
+    let trackingNumber;
+    function changeTrackingNumber(){
+        trackingNumber = document.getElementById('trackingNumber').value;
+    }
+    function changeCarrier(){
+        const carrier = document.getElementById('carrierId');
+        carrierId = carrier.value;
+    }
+
+    async function lookDeliver(){
+        let trackResponse = await fetch("https://apis.tracker.delivery/graphql", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "TRACKQL-API-KEY kl4c9gkf5rvgui8rbu0c17enm:1cmk15do6k6o4gcdimpsle64pilrfteq7aq6rt1kug4hbm7t7l6b",
+            },
+            body: JSON.stringify({
+                "query": `query Track(
+                  $carrierId: ID!,
+                  $trackingNumber: String!
+                ) {
+                  track(
+                    carrierId: $carrierId,
+                    trackingNumber: $trackingNumber
+                  ) {
+                    lastEvent {
+                      time
+                      status {
+                        code
+                      }
+                    }
+                  }
+                }`.trim(),
+                "variables": {
+                    "carrierId": carrierId, // 택배사 선택
+                    "trackingNumber": trackingNumber, // 송장번호 입력
+                },
+            }),
+        });
+        console.log(await trackResponse.json())
+
+    }
+</script>
+</body>
+</html>
