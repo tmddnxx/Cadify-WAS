@@ -68,7 +68,7 @@ public class MemberService implements UserDetailsService {
 
     public void verifyPassword(String rawPassword, String encodedPassword) {
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
-            throw new CustomLogicException(ExceptionCode.WRONG_PASSWORD); 
+            throw new CustomLogicException(ExceptionCode.WRONG_PASSWORD);
         }
     }
 
