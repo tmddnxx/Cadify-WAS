@@ -2,7 +2,6 @@ package com.cadify.cadifyWAS.Controller;
 
 import com.amazonaws.services.s3.model.S3Object;
 import com.cadify.cadifyWAS.Service.S3UploadService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,18 +24,18 @@ public class S3RestController {
 
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadFile(@RequestParam("userId") String userId, @RequestParam("file") MultipartFile file) {
         try {
-            s3Service.uploadFile(file.getOriginalFilename(), file);
+            s3Service.uploadFile(userId, file.getOriginalFilename(), file);
             return ResponseEntity.ok("File uploaded successfully!");
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file");
         }
     }
 
-    @GetMapping("/download/{fileName}")
-    public ResponseEntity<S3Object> downloadFile(@PathVariable String fileName) {
-        S3Object s3Object = s3Service.downloadFile(fileName);
+    @GetMapping("/download/{userId}/{fileName}")
+    public ResponseEntity<S3Object> downloadFile(@PathVariable String userId, @PathVariable String fileName) {
+        S3Object s3Object = s3Service.downloadFile(userId, fileName);
         return ResponseEntity.ok(s3Object);
     }
 

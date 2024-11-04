@@ -15,11 +15,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script th:inline="javascript">
+
+    let userId = "사용자1";
+
     async function uploadFile() {
         const fileInput = document.getElementById('fileInput');
         const formData = new FormData();
         formData.append('file', fileInput.files[0]);
-
+        formData.append('userId', userId);
         const response = await fetch('/api/s3/upload', {
             method: 'POST',
             body: formData
@@ -31,7 +34,7 @@
 
     async function downloadFile() {
         const fileName = document.getElementById('fileNameInput').value;
-        const response = await fetch(`/api/s3/download/${fileName}`);
+        const response = await fetch(`/api/s3/download/${userId}/${fileName}`);
 
         if (response.ok) {
             const blob = await response.blob();
