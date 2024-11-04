@@ -23,16 +23,18 @@ public class S3UploadService {
         this.bucketName = bucketName;
     }
 
-    public void uploadFile(String fileName, MultipartFile file) throws IOException {
+    public void uploadFile(String userId, String fileName, MultipartFile file) throws IOException {
+        String folderPath = userId + "/";
+
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentLength(file.getSize());
         InputStream inputStream = file.getInputStream();
 
-        amazonS3.putObject(bucketName, fileName, inputStream, metadata);
+        amazonS3.putObject(bucketName, folderPath+fileName, inputStream, metadata);
     }
 
-    public S3Object downloadFile(String fileName) {
-        return amazonS3.getObject(bucketName, fileName);
+    public S3Object downloadFile(String userId, String fileName) {
+        return amazonS3.getObject(bucketName, userId+"/"+fileName);
     }
 
 }
