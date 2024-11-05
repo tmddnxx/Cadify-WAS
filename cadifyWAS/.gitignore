@@ -1,37 +1,28 @@
-HELP.md
-.gradle
+#Gradle files
+.gradle/
 build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+#Applcation config
+application.properties
 
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
+#Test output
+test-result/
+reports/
+
+#Build artifacts
+*.jar
+*.war
+
+#Temporary files
+*.tmp
+*.temp
+
+#Log file
+logs/
+*.log
+
+# IDE
 out/
-!**/src/main/**/out/
-!**/src/test/**/out/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
-### VS Code ###
-.vscode/
+# gradle-wrapper.jar
+!gradle-wrapper.jar

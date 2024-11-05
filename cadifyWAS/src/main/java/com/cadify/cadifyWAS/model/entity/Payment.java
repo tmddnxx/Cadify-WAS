@@ -1,4 +1,4 @@
-package com.cadify.cadifyWAS.Entity;
+package com.cadify.cadifyWAS.model.entity;
 
 import lombok.*;
 

@@ -1,4 +1,4 @@
-package com.cadify.cadifyWAS.controller;
+package com.cadify.cadifyWAS.controller.payment;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,4 +1,4 @@
-package com.cadify.cadifyWAS.controller;
+package com.cadify.cadifyWAS.controller.s3;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
