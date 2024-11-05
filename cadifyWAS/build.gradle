@@ -18,6 +18,8 @@ repositories {
 }
 
 dependencies {
+
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	// JPA
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	// Security
@@ -27,7 +29,8 @@ dependencies {
 	// lombok
 	compileOnly 'org.projectlombok:lombok:1.18.34'
 	annotationProcessor 'org.projectlombok:lombok:1.18.34'
-	// test
+
+    // test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
