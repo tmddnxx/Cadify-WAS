@@ -20,5 +20,5 @@ public class PaymentResDTO {
     private String successUrl; // 성공시 콜백 주소
     private String failUrl; // 실패시 콜백 주소
     private String createDate; // 결제 날짜
-    private String paySuccessYN; // 결제 성공 여부 (Y or N)
+    private boolean paySuccess; // 결제 성공 여부 (Y or N)
 }
