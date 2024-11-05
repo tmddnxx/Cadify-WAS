@@ -26,5 +26,3 @@ out/
 
 # gradle-wrapper.jar
 !gradle-wrapper.jar
-
-application.properties
