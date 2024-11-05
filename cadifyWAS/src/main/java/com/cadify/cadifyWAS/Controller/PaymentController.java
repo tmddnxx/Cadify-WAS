@@ -32,7 +32,7 @@ public class PaymentController {
         return "/payment/main";
     }
 
-    @GetMapping("/success")
+    @GetMapping("/success") // 결제 요청 성공
     public String successURL(@RequestParam String paymentKey,
                              @RequestParam String orderId,
                              @RequestParam Long amount,
@@ -62,12 +62,28 @@ public class PaymentController {
 
         log.info("Toss Payments Response: {}", response.body());
 
+        if(response.statusCode() == 200) {
+            // 결제 승인 성공
+            // DB 저장
+            return "/payment/success";
+        }else{
+            //결제 승인 실패
+            //CARD_NOT_SUPPORTED: 카드가 지원되지 않거나, 결제 방법으로 사용할 수 없는 경우.
+            //CARD_EXPIRED: 카드의 유효기간이 만료된 경우.
+            //INSUFFICIENT_BALANCE: 카드의 잔액이 부족한 경우.
+            //INVALID_CARD_NUMBER: 카드 번호가 유효하지 않은 경우.
+            //FRAUD_DETECTED: 결제가 사기로 의심되는 경우.
+
+            model.addAttribute("error", "에러코드");
+            return "/payment/main"; // 오류페이지로 이동 
+        }
 
 
-        return "/payment/success";
+
+
     }
 
-    @GetMapping("/fail")
+    @GetMapping("/fail") // 결제 요청 실패
     public String failURL(@RequestParam("code") String code,
                           @RequestParam("message") String message,
                           @RequestParam("orderId") String orderId,
