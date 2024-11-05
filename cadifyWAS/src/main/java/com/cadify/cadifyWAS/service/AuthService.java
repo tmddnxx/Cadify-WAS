@@ -2,12 +2,11 @@ package com.cadify.cadifyWAS.service;
 
 import com.cadify.cadifyWAS.exception.CustomLogicException;
 import com.cadify.cadifyWAS.exception.ExceptionCode;
-import com.cadify.cadifyWAS.model.dto.AuthDTO;
+import com.cadify.cadifyWAS.model.dto.user.AuthDTO;
 import com.cadify.cadifyWAS.model.entity.Token;
 import com.cadify.cadifyWAS.repository.TokenRepository;
 import com.cadify.cadifyWAS.security.jwt.JwtProvider;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

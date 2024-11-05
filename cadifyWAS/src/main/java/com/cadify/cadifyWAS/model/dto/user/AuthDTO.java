@@ -1,4 +1,4 @@
-package com.cadify.cadifyWAS.model.dto;
+package com.cadify.cadifyWAS.model.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

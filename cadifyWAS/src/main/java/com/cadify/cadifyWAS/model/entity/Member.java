@@ -1,7 +1,7 @@
 package com.cadify.cadifyWAS.model.entity;
 
 import com.cadify.cadifyWAS.Util.BaseTimeEntity;
-import com.cadify.cadifyWAS.model.dto.MemberDTO;
+import com.cadify.cadifyWAS.model.dto.user.MemberDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

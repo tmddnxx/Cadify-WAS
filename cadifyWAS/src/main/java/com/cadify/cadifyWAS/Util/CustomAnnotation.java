@@ -1,7 +1,7 @@
 package com.cadify.cadifyWAS.Util;
 
-import com.cadify.cadifyWAS.model.dto.AuthDTO;
-import com.cadify.cadifyWAS.model.dto.MemberDTO;
+import com.cadify.cadifyWAS.model.dto.user.AuthDTO;
+import com.cadify.cadifyWAS.model.dto.user.MemberDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;

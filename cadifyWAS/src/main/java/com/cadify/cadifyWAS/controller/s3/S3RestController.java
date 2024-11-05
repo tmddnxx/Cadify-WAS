@@ -1,4 +1,4 @@
-package com.cadify.cadifyWAS.controller;
+package com.cadify.cadifyWAS.controller.s3;
 
 import com.amazonaws.services.s3.model.S3Object;
 import com.cadify.cadifyWAS.service.S3UploadService;

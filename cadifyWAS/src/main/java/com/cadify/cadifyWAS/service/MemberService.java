@@ -3,13 +3,12 @@ package com.cadify.cadifyWAS.service;
 import com.cadify.cadifyWAS.exception.CustomLogicException;
 import com.cadify.cadifyWAS.exception.ExceptionCode;
 import com.cadify.cadifyWAS.mapper.MemberMapper;
-import com.cadify.cadifyWAS.model.dto.MemberDTO;
+import com.cadify.cadifyWAS.model.dto.user.MemberDTO;
 import com.cadify.cadifyWAS.model.entity.Member;
 import com.cadify.cadifyWAS.repository.MemberRepository;
 import com.cadify.cadifyWAS.security.jwt.JwtProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
-import lombok.CustomLog;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,8 +18,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import io.jsonwebtoken.SignatureException;
 
 import java.util.ArrayList;
 import java.util.List;

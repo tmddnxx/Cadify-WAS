@@ -1,6 +1,6 @@
 package com.cadify.cadifyWAS.mapper;
 
-import com.cadify.cadifyWAS.model.dto.MemberDTO;
+import com.cadify.cadifyWAS.model.dto.user.MemberDTO;
 import com.cadify.cadifyWAS.model.entity.Member;
 //import lombok.RequiredArgsConstructor;
 //import org.mapstruct.Mapper;

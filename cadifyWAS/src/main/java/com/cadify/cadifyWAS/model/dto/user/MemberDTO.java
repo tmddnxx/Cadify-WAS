@@ -1,12 +1,10 @@
-package com.cadify.cadifyWAS.model.dto;
+package com.cadify.cadifyWAS.model.dto.user;
 
 
 import com.cadify.cadifyWAS.model.entity.Member;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class MemberDTO {

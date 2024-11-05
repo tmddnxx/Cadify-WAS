@@ -1,4 +1,4 @@
-package com.cadify.cadifyWAS.security;
+package com.cadify.cadifyWAS.Config;
 
 import com.cadify.cadifyWAS.security.exception.CustomAccessDeniedHandler;
 import com.cadify.cadifyWAS.security.exception.CustomAuthenticationEntryPoint;
