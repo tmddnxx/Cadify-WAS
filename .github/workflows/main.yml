@@ -24,7 +24,7 @@ jobs:
           java-version: 17
 
       - name: Permission for gradlew
-        run: chmod +x ./gradlew
+        run: chmod +x /cadifyWAS/gradlew
         shell: bash
 
       - name: Build and Test
