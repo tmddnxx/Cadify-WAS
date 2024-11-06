@@ -10,6 +10,6 @@ public class S3Controller {
 
     @GetMapping("")
     public String main(){
-        return "/s3/main";
+        return "s3/main";
     }
 }

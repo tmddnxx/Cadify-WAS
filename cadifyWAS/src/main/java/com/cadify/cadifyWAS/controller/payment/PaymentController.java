@@ -29,7 +29,7 @@ public class PaymentController {
     @GetMapping("")
     public String payment(Model model){
         model.addAttribute("tossClientApiKey", tossClientApiKey);
-        return "/payment/main";
+        return "payment/main";
     }
 
     @GetMapping("/success") // 결제 요청 성공
@@ -65,7 +65,7 @@ public class PaymentController {
         if(response.statusCode() == 200) {
             // 결제 승인 성공
             // DB 저장
-            return "/payment/success";
+            return "payment/success";
         }else{
             //결제 승인 실패
             //CARD_NOT_SUPPORTED: 카드가 지원되지 않거나, 결제 방법으로 사용할 수 없는 경우.
@@ -75,7 +75,7 @@ public class PaymentController {
             //FRAUD_DETECTED: 결제가 사기로 의심되는 경우.
 
             model.addAttribute("error", "에러코드");
-            return "/payment/main"; // 오류페이지로 이동 
+            return "payment/main"; // 오류페이지로 이동
         }
 
 
@@ -94,6 +94,6 @@ public class PaymentController {
         log.info("Message {}: " , message);
         log.info("OrderID {}: " , orderId);
 
-        return "/payment/fail";
+        return "payment/fail";
     }
 }

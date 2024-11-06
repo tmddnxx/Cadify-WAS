@@ -24,6 +24,7 @@
         </select>
         <input id="trackingNumber" type="text" onchange="changeTrackingNumber()">
         <button onclick="lookDeliver()">배송 조회</button>
+        <button onclick="postDeliver()">배송 등록</button>
     </div>
 <script th:inline="javascript">
 
@@ -36,6 +37,35 @@
         const carrier = document.getElementById('carrierId');
         carrierId = carrier.value;
     }
+    async function postDeliver() {
+        const result = await fetch('deliver/post', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+
+                carrier: carrierId,
+                number: trackingNumber,
+            })
+        });
+
+        if (!result.ok) {
+            console.error('HTTP error', result.status, result.statusText);
+            return;
+        }
+
+        const responseText = await result.text();
+        console.log(responseText);
+
+        try {
+            const data = JSON.parse(responseText);
+            console.log(data);
+        } catch (e) {
+            console.error("Invalid JSON response:", e);
+        }
+    }
+
 
     async function lookDeliver(){
         let trackResponse = await fetch("https://apis.tracker.delivery/graphql", {
@@ -68,8 +98,8 @@
             }),
         });
         console.log(await trackResponse.json())
+    };
 
-    }
 </script>
 </body>
 </html>

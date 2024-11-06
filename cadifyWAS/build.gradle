@@ -47,7 +47,7 @@ dependencies {
 	// Swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 	// Logback 로그 기록
-	implementation 'ch.qos.logback:logback-classic:1.4.11'
+//	implementation 'ch.qos.logback:logback-classic:1.4.11'
 
 
 	// mapstruct
