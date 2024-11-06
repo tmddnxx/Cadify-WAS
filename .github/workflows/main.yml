@@ -24,11 +24,11 @@ jobs:
           java-version: 17
 
       - name: Permission for gradlew
-        run: chmod +x cadify-WAS/gradlew
+        run: chmod +x cadifyWAS/gradlew
         shell: bash
 
       - name: Build and Test
-        run: cd cadify-WAS && ./gradlew build test
+        run: cd cadifyWAS && ./gradlew build test
         shell: bash
 
       - name: Make Zip File
