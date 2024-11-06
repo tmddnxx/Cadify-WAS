@@ -22,7 +22,12 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-
+          
+      - name: Create application.properties from Secrets
+        run: |
+          echo "${{ APPLICATION_PROPERTIES }}" > cadify-WAS/src/main/resources/application.properties
+        shell: bash
+        
       - name: Permission for gradlew
         run: chmod +x cadifyWAS/gradlew
         shell: bash
