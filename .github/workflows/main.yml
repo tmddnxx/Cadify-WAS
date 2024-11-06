@@ -24,14 +24,15 @@ jobs:
           java-version: 17
 
       - name: Permission for gradlew
-        run: chmod +x cadifyWAS/gradlew
+        run: chmod +x cadify-WAS/gradlew
         shell: bash
 
       - name: Build and Test
-        run: cadifyWAS/gradlew build test
+        run: cd cadify-WAS && ./gradlew build test
+        shell: bash
 
       - name: Make Zip File
-        run: zip -qq -r ./$GITHUB_SHA.zip . 
+        run: zip -qq -r ./$GITHUB_SHA.zip .
         shell: bash
 
       - name: Upload to S3
