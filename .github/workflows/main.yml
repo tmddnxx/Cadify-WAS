@@ -13,36 +13,41 @@ env:
   DEPLOYMENT_GROUP_NAME: cadify_cicd
   
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Set up JDK 17
         uses: actions/setup-java@v1
         with:
           java-version: 17
 
       - name: Permission for gradlew
-        run: chmod +x /cadifyWAS/gradlew
+        run: chmod +x cadify/gradlew
         shell: bash
 
       - name: Build and Test
-        run: ./gradlew build test
-        
+        run: cadify/gradlew build test
+
       - name: Make Zip File
-        run: zip -qq -r ./$GITHUB_SHA.zip .
+        run: zip -qq -r ./$GITHUB_SHA.zip . 
         shell: bash
-        
+
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
+        shell: bash
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_PRIVATE_ACCESS_KEY }}
           aws-region: ap-northeast-2
-      
-      - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 
       - name: Code Deploy To EC2 instance
         run: aws deploy create-deployment 
@@ -50,4 +55,4 @@ jobs:
                 --deployment-config-name CodeDeployDefault.AllAtOnce
                 --deployment-group-name $DEPLOYMENT_GROUP_NAME 
                 --s3-location bucket=$BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
-
+        shell: bash
